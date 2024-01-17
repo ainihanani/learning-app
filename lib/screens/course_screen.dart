@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:learning_app/constants/color.dart';
 import 'package:learning_app/models/course.dart';
 import 'package:learning_app/screens/details_screen.dart';
+import 'package:learning_app/screens/learning_base.dart';
 
 class CourseScreen extends StatefulWidget {
   const CourseScreen({Key? key}) : super(key: key);
@@ -28,18 +28,23 @@ class _CourseScreenState extends State<CourseScreen> {
                   child: Stack(
                     children: [
                       Align(
-                        child: Text(
-                          'Development',
-                          style: Theme.of(context).textTheme.displayMedium,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Basic Computer Components',
+                              style: Theme.of(context).textTheme.displayMedium,
+                            ),
+                          ],
                         ),
                       ),
                       Positioned(
                         left: 0,
                         child: CustomIconButton(
-                          child: const Icon(Icons.arrow_back),
                           height: 35,
                           width: 35,
                           onTap: () => Navigator.pop(context),
+                          child: const Icon(Icons.arrow_back),
                         ),
                       ),
                     ],
@@ -60,6 +65,25 @@ class _CourseScreenState extends State<CourseScreen> {
                     itemBuilder: (_, int index) {
                       return CourseContainer(
                         course: courses[index],
+                        onTap: () {
+                          if (courses[index].category == 'AR') {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const LearningBasePage(),
+                              ),
+                            );
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => CourseDetailsScreen(
+                                  title: courses[index].name,
+                                ),
+                              ),
+                            );
+                          }
+                        },
                       );
                     },
                     itemCount: courses.length,
@@ -74,22 +98,23 @@ class _CourseScreenState extends State<CourseScreen> {
   }
 }
 
+CustomIconButton({required int height, required int width, required void Function() onTap, required Icon child}) {
+}
+
 class CourseContainer extends StatelessWidget {
   final Course course;
+  final VoidCallback onTap;
+
   const CourseContainer({
     Key? key,
     required this.course,
+    required this.onTap,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) => DetailsScreen(
-                    title: course.name,
-                  ))),
+      onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
@@ -114,18 +139,10 @@ class CourseContainer extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(course.name),
-                  Text(
-                    "Author ${course.author}",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  ),
                   const SizedBox(
                     height: 5,
                   ),
-                  LinearProgressIndicator(
-                    value: course.completedPercentage,
-                    backgroundColor: Colors.black12,
-                    color: kPrimaryColor,
-                  )
+                  // Removed the VideoCompletionIndicator
                 ],
               ),
             ),

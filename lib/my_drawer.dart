@@ -6,7 +6,7 @@ class MyDrawer extends StatelessWidget {
   final String email;
   final VoidCallback onUpdateProfile;
 
-  MyDrawer({
+  const MyDrawer({super.key, 
     required this.status,
     required this.name,
     required this.email,
@@ -24,12 +24,12 @@ class MyDrawer extends StatelessWidget {
             accountEmail: Text(email),
           ),
           ListTile(
-            leading: Icon(Icons.assignment_ind),
+            leading: const Icon(Icons.assignment_ind),
             title: Text('Status: $status'),
           ),
           ListTile(
-            leading: Icon(Icons.edit),
-            title: Text('Update Profile'),
+            leading: const Icon(Icons.edit),
+            title: const Text('Update Profile'),
             onTap: onUpdateProfile, // Trigger the profile update action when clicked.
           ),
           // Add more menu items if needed.

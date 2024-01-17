@@ -1,10 +1,11 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:learning_app/constants/color.dart';
 import 'package:learning_app/constants/size.dart';
 import 'package:learning_app/models/category.dart';
+import 'package:learning_app/models/course2.dart';
+import 'package:learning_app/screens/quiz_screen.dart';
 import 'package:learning_app/screens/course_screen.dart';
-import 'package:learning_app/widgets/circle_button.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../widgets/search_testfield.dart';
 
@@ -18,12 +19,12 @@ class FeaturedScreen extends StatefulWidget {
 class _FeaturedScreenState extends State<FeaturedScreen> {
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
+    return const AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.light,
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         body: Column(
-          children: const [
+          children: [
             AppBar(),
             Body(),
           ],
@@ -41,8 +42,7 @@ class Body extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding:
-              const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 0),
+          padding: const EdgeInsets.only(top: 10, left: 20, right: 20, bottom: 0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -89,6 +89,7 @@ class Body extends StatelessWidget {
 
 class CategoryCard extends StatelessWidget {
   final Category category;
+
   const CategoryCard({
     Key? key,
     required this.category,
@@ -97,12 +98,33 @@ class CategoryCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const CourseScreen(),
-        ),
-      ),
+      onTap: () {
+        if (category.name == 'Basic Computer Components') {
+          // Navigate to CourseScreen for Basic Components
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CourseScreen(),
+            ),
+          );
+        } else if (category.name == 'ShortcutKey') {
+          // Navigate to Course2 for Shortkey
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const Course2(),
+            ),
+          );
+        } else if (category.name == 'Quiz') {
+          // Navigate to QuizScreen for Quiz
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => QuizScreen(),
+            ),
+          );
+        }
+      },
       child: Container(
         padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
@@ -113,7 +135,7 @@ class CategoryCard extends StatelessWidget {
               color: Colors.black.withOpacity(.1),
               blurRadius: 4.0,
               spreadRadius: .05,
-            ), //BoxShadow
+            ),
           ],
         ),
         child: Column(
@@ -140,6 +162,7 @@ class CategoryCard extends StatelessWidget {
     );
   }
 }
+
 
 class AppBar extends StatelessWidget {
   const AppBar({
@@ -168,25 +191,21 @@ class AppBar extends StatelessWidget {
         ),
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "Hello,\nGood Morning",
-                style: Theme.of(context).textTheme.titleLarge,
+              // Adjust the logo size
+              Image.asset(
+                'assets/images/logo.png',
+                height: 20 * 3, // Set the desired height (current height * 5)
               ),
-              CircleButton(
-                icon: Icons.notifications,
-                onPressed: () {},
-              ),
+              const SizedBox(width: 10), // Add some spacing
             ],
           ),
-          const SizedBox(
-            height: 20,
-          ),
-          const SearchTextField()
+          const SizedBox(height: 20), // Add some spacing
+          const SearchTextField(),
         ],
       ),
     );

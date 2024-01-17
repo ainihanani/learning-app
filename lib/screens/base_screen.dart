@@ -1,8 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:learning_app/constants/color.dart';
 import 'package:learning_app/constants/icons.dart';
 import 'package:learning_app/constants/size.dart';
 import 'package:learning_app/screens/featured_screen.dart';
+import 'package:flutter/material.dart';
+
 
 class BaseScreen extends StatefulWidget {
   const BaseScreen({Key? key}) : super(key: key);
@@ -14,14 +15,12 @@ class BaseScreen extends StatefulWidget {
 class _BaseScreenState extends State<BaseScreen> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    FeaturedScreen(),
-    FeaturedScreen(),
-    FeaturedScreen(),
-    FeaturedScreen(),
-    // Add your other screens here
+  static final List<Widget> _widgetOptions = <Widget>[
+    const FeaturedScreen(),
+    const FeaturedScreen(),
+    const FeaturedScreen(),
+   
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,64 +28,52 @@ class _BaseScreenState extends State<BaseScreen> {
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: kPrimaryColor,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icFeatured,
-              height: kBottomNavigationBarItemSize,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: kPrimaryColor,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          items: [
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icFeatured,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icFeaturedOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Featured",
             ),
-            icon: Image.asset(
-              icFeaturedOutlined,
-              height: kBottomNavigationBarItemSize,
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icArPage,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icArPageOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Fun AR ",
+          
             ),
-            label: "Featured",
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icLearning,
-              height: kBottomNavigationBarItemSize,
+            BottomNavigationBarItem(
+              activeIcon: Image.asset(
+                icSetting,
+                height: kBottomNavigationBarItemSize,
+              ),
+              icon: Image.asset(
+                icSettingOutlined,
+                height: kBottomNavigationBarItemSize,
+              ),
+              label: "Settings",
             ),
-            icon: Image.asset(
-              icLearningOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: "My Learning",
-            // Add other BottomNavigationBarItem items here for your different screens
-          ),
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icWishlist,
-              height: kBottomNavigationBarItemSize,
-            ),
-            icon: Image.asset(
-              icWishlistOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: "Wishlist",
-          ), //tambahlagisatu
-          BottomNavigationBarItem(
-            activeIcon: Image.asset(
-              icSetting,
-              height: kBottomNavigationBarItemSize,
-            ),
-            icon: Image.asset(
-              icSettingOutlined,
-              height: kBottomNavigationBarItemSize,
-            ),
-            label: "Settings",
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: (int index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
-      ),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: (int index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          }),
     );
   }
 }

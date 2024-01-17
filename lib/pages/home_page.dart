@@ -1,9 +1,22 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:learning_app/pages/login_page.dart';
-import 'package:learning_app/pages/sign_up_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:learning_app/screens/featured_screen.dart';
 
 class HomePage extends StatelessWidget {
+  final void Function() updateUserProfile;
+
+  const HomePage({super.key, required this.updateUserProfile});
+
+  // Function to handle the sign-out
+  void _signOut(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pop(context); // Pop the current screen
+    } catch (e) {
+      print('Error signing out: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,22 +24,21 @@ class HomePage extends StatelessWidget {
         child: Container(
           width: double.infinity,
           height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 50),
           child: Column(
-            // even space distribution
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  Text(
+                  const Text(
                     "Welcome",
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 30,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Text(
@@ -39,7 +51,7 @@ class HomePage extends StatelessWidget {
                   )
                 ],
               ),
-              Text(
+              const Text(
                 "Welcome to an exciting adventure into the world of computer components!",
                 style: TextStyle(
                   fontSize: 26,
@@ -59,52 +71,39 @@ class HomePage extends StatelessWidget {
               ),
               Container(
                 height: MediaQuery.of(context).size.height / 3,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        image: AssetImage("assets/images/splash.png"))),
+                decoration: const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/splash.png"),
+                  ),
+                ),
               ),
               Column(
                 children: <Widget>[
-                  // the login button
-                  MaterialButton(
-                    minWidth: double.infinity,
-                    height: 60,
-                    onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => LoginPage()));
-                    },
-                    // defining the shape
-                    shape: RoundedRectangleBorder(
-                        side: BorderSide(color: Colors.black),
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Text(
-                      "Login",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
-                    ),
-                  ),
-                  // creating the signup button
-                  SizedBox(height: 20),
                   MaterialButton(
                     minWidth: double.infinity,
                     height: 60,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SignupPage()));
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const FeaturedScreen(),
+                        ),
+                      );
                     },
-                    color: Color(0xff0095FF),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(50)),
-                    child: Text(
-                      "Sign up",
+                    shape: const RoundedRectangleBorder(),
+                    child: const Text(
+                      "Start",
                       style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 18),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                      ),
                     ),
-                  )
+                  ),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => _signOut(context),
+                    child: const Text('Sign Out'),
+                  ),
                 ],
               )
             ],
